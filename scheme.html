@@ -1,43 +1,124 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <script src="qrcode.js"></script>
-    <style>
-       .button {
-                background-color: #4CAF50;
-                border: none;
-                color: white;
-                padding: 15px 32px;
-                text-align: center;
-                text-decoration: none;
-                display: inline-block;
-                font-size: 16px;
-                margin: 4px 2px;
-                cursor: pointer;
-            }
-        .wx{
-            font-size: 30px;
-            color: red;
-        }
-    </style>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<title>选择浏览器打开</title>
+	<script src="qrcode.js"></script>
 </head>
 <body>
-<div>
-    <button><a id="login" href="#"><h1>点击登录跳转学习强国app</h1></a></button>
-    <a id="login" href="#" class="button">点击跳转登录学习app</a>
-</div>
-<div id="wx" class="wx"></div>
-<div id="qrcode" style="margin-top: 10px;display:block;margin:0 auto">
-    <img id="img" src="#"  alt="#"/>
-</div>
-</body>
+	<style type="text/css">
+	*{margin:0; padding:0;}
+	img{max-width: 100%; height: auto;}
+	header {
+		padding: 104px 0;
+		background: url(../images/header.jpg) no-repeat 50% 50%;
+		font: 24px/36px "Raleway", "Helvetica Neue", Helvetica, Arial, sans-serif;
+		color: white;
+		-moz-background-size: cover;
+		-webkit-background-size: cover;
+		-o-background-size: cover;
+		background-size: cover;
+		-moz-box-sizing: border-box;
+		-webkit-box-sizing: border-box;
+		box-sizing: border-box;
+	}
+
+	  header {
+		  text-align: center;
+		  font-size: 19px;
+		  line-height: 28px;
+	  }
+
+	  header .buttons-wrapper .button {
+		  margin-bottom: 20px
+	  }
+
+	.button {
+		color: white;
+		background: #10bbf1;
+		height: 58px;
+		border: 2px solid #10bbf1;
+		font: 500 22px "Raleway", "Helvetica Neue", Helvetica, Arial, sans-serif;
+		padding: 0 21px;
+		-moz-transition: color 0.1s linear, background-color 0.1s linear, border-color 0.1s linear;
+		-ms-transition: color 0.1s linear, background-color 0.1s linear, border-color 0.1s linear;
+		-o-transition: color 0.1s linear, background-color 0.1s linear, border-color 0.1s linear;
+		-webkit-transition: color 0.1s linear, background-color 0.1s linear, border-color 0.1s linear;
+		transition: color 0.1s linear, background-color 0.1s linear, border-color 0.1s linear;
+		-moz-border-radius: 5px;
+		-webkit-border-radius: 5px;
+		border-radius: 5px;
+		-moz-box-sizing: border-box;
+		-webkit-box-sizing: border-box;
+		box-sizing: border-box;
+	}
+
+	.button:hover {
+		background: #40c9f4;
+		border-color: #40c9f4;
+	}
+
+	.button:active {
+		background: #0b97c3;
+		border-color: #0b97c3;
+	}
+
+	a.button {
+		text-decoration: none;
+		display: inline-block;
+		line-height: 54px;
+		color: white;
+	}
+
+	</style>
+<header>
+	<div class="buttons-wrapper">
+	<a id="login" href="#" class="button">点击跳转学习app</a>
+	</div>
+	<div id="qrcode" style="margin-top: 10px">
+	<img id="img" src="#" alt="#" />
+	</div>
+</header>
+	<script type="text/javascript">
+		function is_weixin() {
+		    var ua = navigator.userAgent.toLowerCase();
+		    if (ua.match(/MicroMessenger/i) == "micromessenger") {
+		        return true;
+		    } else {
+		        return false;
+		    }
+		}
+		var isWeixin = is_weixin();
+		var winHeight = typeof window.innerHeight != 'undefined' ? window.innerHeight : document.documentElement.clientHeight;
+		console.log(winHeight);
+		function loadHtml(){
+			var div = document.createElement('div');
+			div.id = 'weixin-tip';
+			div.innerHTML = '<p><img src="https://s1.ax1x.com/2022/03/24/qGOcSx.png" alt="微信打开"/></p>';
+			document.body.appendChild(div);
+		}
+		
+		function loadStyleText(cssText) {
+	        var style = document.createElement('style');
+	        style.rel = 'stylesheet';
+	        style.type = 'text/css';
+	        try {
+	            style.appendChild(document.createTextNode(cssText));
+	        } catch (e) {
+	            style.styleSheet.cssText = cssText; //ie9以下
+	        }
+            var head=document.getElementsByTagName("head")[0]; //head标签之间加上style样式
+            head.appendChild(style); 
+	    }
+	    var cssText = "#weixin-tip{position: fixed; left:0; top:0; background: rgba(0,0,0,0.8); filter:alpha(opacity=80); width: 100%; height:100%; z-index: 100;} #weixin-tip p{text-align: center; margin-top: 10%; padding:0 5%;}";
+		if(isWeixin){
+			loadHtml();
+			loadStyleText(cssText);
+		}
+	</script>
 <script>
     function load() {
-        if (isWechat()){
-            document.getElementById("wx").innerText = "当前为微信环境，请点击右上角浏览器中打开"
-        }
         let search = window.location.search
         search = search.substring(1,search.length)
         document.getElementById("login").setAttribute("href","dtxuexi://appclient/page/study_feeds?url="+search)
@@ -46,10 +127,7 @@
         document.getElementById("img").setAttribute("src",imgBase64)
         document.getElementById("login").click()
     }
-    function isWechat() {
-        return /MicroMessenger/i.test(window.navigator.userAgent);
-    }
     load()
-
 </script>
+</body>
 </html>
