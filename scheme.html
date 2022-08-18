@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<title>登录跳转页面</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="util.css">
+	<link rel="stylesheet" type="text/css" href="main.css">
+</head>
+
+<body>
+
+	<div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100">
+				<form class="login100-form">
+					<span class="login100-form-title">
+						<img class="ico" src="xuexi.png"><br/>
+						好好学习
+					</span>
+
+					<div id="wx" class="txt"></div>
+					
+					<div class="container-login100-form-btn">
+						<div class="wrap-login100-form-btn">
+							<div class="login100-form-bgbtn"></div>
+							<button class="login100-form-btn"><a id="login" href="#">跳转学习app</a></button>
+						</div>
+					</div>
+
+
+				</form>
+			</div>
+		</div>
+	</div>
+
+</body>
+<script>
+    function load() {
+        if (isWechat()){
+            document.getElementById("wx").innerText = "当前为微信环境，请点击右上角浏览器中打开"
+        }
+        let search = window.location.search
+        search = search.substring(1,search.length)
+        document.getElementById("login").setAttribute("href","dtxuexi://appclient/page/study_feeds?url="+search)
+        console.log(unescape(search))
+        let imgBase64 = jrQrcode.getQrBase64(unescape(search), {});
+        document.getElementById("img").setAttribute("src",imgBase64)
+        document.getElementById("login").click()
+    }
+    function isWechat() {
+        return /MicroMessenger/i.test(window.navigator.userAgent);
+    }
+    load()
+</script>
+</html>
